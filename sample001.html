@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .parent {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .res {
+            color: rgb(94, 19, 19);
+            font-weight: bold;
+            font-size: 70px;
+            -webkit-user-select: none;
+            user-select: none;
+            /* margin: 0 auto; */
+            /*margin: auto はwidthが指定されていないと中央ぞろえにならない*/
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        <div class="res">画面をクリック</div>
+    </div>
+
+    <script>
+        const result = document.querySelector('.res');
+        let str = ['自己紹介', 'プログラムを作る際の考え方とは', '具体的にやったことのエピソードは？', 'ガクチカ', 'バグが起きてしまったらどう改善していったか？', 'スケジュール管理のメリットを具体的に', '自己PR', '長所', '短所', '長所・短所'];
+        const MAXNUM = str.length;  
+        let hold = [];       //holdはrで今まで出た数値を記録していく(一周したら初期化)
+
+        //ランダムにstrの中身を表示する。ただし、一周するまでは同じ単語は出ないものとする。
+        document.addEventListener('click', () => {  //画面クリックで実行
+            let r = Math.floor(Math.random() * MAXNUM), flg = 0;    //flgはrの値がすでに出ている場合0を示し、初めて出た値の場合1を示すようにする
+            //rがすでにでている数値か調べる
+            while (flg == 0) {
+                flg = 1;    //ここを消すと無限ループになるので注意！
+                for (let i = 0; i < hold.length; i++) {     //holdはなにもないとき0を示すので、最初の処理や初期化された直後の処理では実行されない
+                    flg = 0;    //ここがないと同じ単語が出てしまうので注意！
+                    if (hold[i] == r) {
+                        r = Math.floor(Math.random() * MAXNUM)
+                        break;              
+                    }
+                    flg = 1;    
+                }
+                console.log('whileが続いています。');
+            }
+            hold.push(r);   
+
+            console.log(str[r]);
+            result.innerHTML = str[r];
+            //hold配列がstr配列と同じ長さになったらhold配列を初期化する
+            if(hold.length==MAXNUM){        //holdの要素数がMAXNUMと同じになったらholdを初期化（全ての単語を出力したことになる）
+                hold = [];                  
+                console.log('一周しました。');  
+            }
+        })
+
+    </script>
+</body>
+
+</html>
